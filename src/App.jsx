@@ -1,9 +1,16 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
+import Header from "./components/Header";
+import EventList from "./components/EventList";
+
 function App() {
 
   return (
-    <>
-      <h1>fuck you</h1>
-    </>
+    <section>
+      <Header />
+      <EventList />
+    </section>
   )
 }
 

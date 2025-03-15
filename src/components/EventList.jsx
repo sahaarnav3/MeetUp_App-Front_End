@@ -4,19 +4,27 @@ import { useState } from "react";
 
 const EventList = () => {
   const url = "https://meet-up-app-back-end.vercel.app/events";
-  const { data, loading, error } = useFetch(url);
-  let eventData = [data ? data: ""];
-  const [ renderedEventData, setRenderedEventData ] = useState(data);
+  const { data, error } = useFetch(url);
+  if(error)
+    console.log("Error occurred in fetching data..", error);
+  const [renderedEventData, setRenderedEventData] = useState(data);
 
   function selectHandler(event) {
     // console.log(event.target.value);
-    if (event.target.value === "All") eventData = [...data];
+    // let eventData = [];
+    // if (event.target.value === "All") eventData = [...data];
+    if (event.target.value === "All") setRenderedEventData([...data]);
+    // else
+    //   eventData = data.filter(
+    //     (eventValue) => eventValue.mode === event.target.value
+    //   );
     else
-     eventData = data.filter((eventData) => eventData.mode === event.target.value);
-    console.log(eventData);
-    setRenderedEventData(eventData);
+      setRenderedEventData(data.filter(
+        (eventValue) => eventValue.mode === event.target.value
+      ));
+    // console.log(eventData);
+    // setRenderedEventData(eventData);
   }
-  
 
   return (
     <div className="bg-body-secondary py-4 px-3">
@@ -42,7 +50,7 @@ const EventList = () => {
         </div>
         <div id="event-cards">
           <div className="row justify-content-center my-4">
-            {renderedEventData?.length > 0 ? (
+            {renderedEventData?.length > 0 && !error ? (
               renderedEventData.map((event) => (
                 <div
                   className="card rounded px-0 col-md-4 my-2 mx-4 text-center"
@@ -58,9 +66,7 @@ const EventList = () => {
                     <h5 className="card-title m-1">{event.title}</h5>
                     <p className="card-text m-1">{event.dateTimeFrom}</p>
                     {event.mode == "Online" ? (
-                      <button className="btn btn-success">
-                        Online
-                      </button>
+                      <button className="btn btn-success">Online</button>
                     ) : (
                       <button className="btn btn-outline-secondary">
                         Offline
@@ -76,7 +82,7 @@ const EventList = () => {
                 </div>
               ))
             ) : (
-              <h2>Please select event type..</h2>
+              error ? <h2>Some error occurred in fetching data.</h2> : <h2>Please select event type..</h2> 
             )}
           </div>
         </div>

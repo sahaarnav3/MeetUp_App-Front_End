@@ -1,10 +1,9 @@
 import { NavLink } from "react-router-dom";
 
-const Header = ({ setSearchResult, searchHandlerFilter}) => {
+const Header = ({searchHandlerFilter}) => {
 
   const searchHandler = (e) => {
     const value = e.target.value;
-    setSearchResult(value);
     searchHandlerFilter(value);
   }
 

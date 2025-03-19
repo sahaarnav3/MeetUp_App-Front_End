@@ -4,13 +4,11 @@ import { useState, useEffect } from "react";
 const EventList = ({ data, error }) => {
   if (error) console.log("Error occurred in fetching data..", error);
   const [renderedEventData, setRenderedEventData] = useState(data);
-  // console.log(data);
 
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setRenderedEventData(data);
     }, 500);
-
     return () => clearTimeout(timeOut); 
   }, [data]); //[] try to keep empty after implementing search to see what happen.
 

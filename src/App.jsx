@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 function App() {
   const url = "https://meet-up-app-back-end.vercel.app/events";
   const { data, error } = useFetch(url);
-  const [searchResult, setSearchResult] = useState("");
   const [finalData, setFinalData] = useState("");
   const searchHandlerFilter = (value) => {
     setFinalData(
@@ -33,7 +32,6 @@ function App() {
   return (
     <section>
       <Header
-        setSearchResult={setSearchResult}
         searchHandlerFilter={searchHandlerFilter}
       />
       <EventList data={finalData} error={error} />

@@ -1,6 +1,13 @@
 import { NavLink } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ setSearchResult, searchHandlerFilter}) => {
+
+  const searchHandler = (e) => {
+    const value = e.target.value;
+    setSearchResult(value);
+    searchHandlerFilter(value);
+  }
+
   return (
     <header>
       <div>
@@ -13,6 +20,7 @@ const Header = () => {
               type="search"
               placeholder="🔍 Search"
               aria-label="Search"
+              onChange={searchHandler}
             />
           </form>
         </div>

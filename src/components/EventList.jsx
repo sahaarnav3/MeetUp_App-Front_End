@@ -1,29 +1,25 @@
 import { NavLink } from "react-router-dom";
-import useFetch from "../useFetch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const EventList = () => {
-  const url = "https://meet-up-app-back-end.vercel.app/events";
-  const { data, error } = useFetch(url);
-  if(error)
-    console.log("Error occurred in fetching data..", error);
+const EventList = ({ data, error }) => {
+  if (error) console.log("Error occurred in fetching data..", error);
   const [renderedEventData, setRenderedEventData] = useState(data);
+  // console.log(data);
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setRenderedEventData(data);
+    }, 500);
+
+    return () => clearTimeout(timeOut); 
+  }, [data]); //[] try to keep empty after implementing search to see what happen.
 
   function selectHandler(event) {
-    // console.log(event.target.value);
-    // let eventData = [];
-    // if (event.target.value === "All") eventData = [...data];
     if (event.target.value === "All") setRenderedEventData([...data]);
-    // else
-    //   eventData = data.filter(
-    //     (eventValue) => eventValue.mode === event.target.value
-    //   );
     else
-      setRenderedEventData(data.filter(
-        (eventValue) => eventValue.mode === event.target.value
-      ));
-    // console.log(eventData);
-    // setRenderedEventData(eventData);
+      setRenderedEventData(
+        data.filter((eventValue) => eventValue.mode === event.target.value)
+      );
   }
 
   return (
@@ -39,10 +35,9 @@ const EventList = () => {
               className="form-select"
               onChange={selectHandler}
             >
-              <option value="All" selected disabled>
-                Select Event Type
+              <option value="All">
+                All
               </option>
-              <option value="All">All</option>
               <option value="Online">Online</option>
               <option value="Offline">Offline</option>
             </select>
@@ -81,8 +76,10 @@ const EventList = () => {
                   </NavLink>
                 </div>
               ))
+            ) : error ? (
+              <h2>Some error occurred in fetching data.</h2>
             ) : (
-              error ? <h2>Some error occurred in fetching data.</h2> : <h2>Please select event type..</h2> 
+              <h2>Loading...</h2>
             )}
           </div>
         </div>
